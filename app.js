@@ -10,6 +10,12 @@ const app = express()
 // Habilitar CORS
 app.use(cors())
 
+// Habilitar uso de body en POST
+app.use(express.json())
+
+// Habilitar uso de recursos publicos
+app.use(express.static('storage'))
+
 // Configurar Swagger
 const swaggerOptions = {
   swaggerDefinition: {

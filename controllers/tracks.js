@@ -1,3 +1,5 @@
+const { trackModel } = require('../models')
+
 /**
  * @swagger
  * /tracks/{id}:
@@ -36,9 +38,7 @@
  *       500:
  *         description: Error en el servidor.
  */
-const getItem = (req, res) => {
-
-}
+const getItem = (req, res) => {}
 
 /**
  * @swagger
@@ -71,11 +71,18 @@ const getItem = (req, res) => {
  *       500:
  *         description: Error en el servidor.
  */
-const getItems = (req, res) => {
-  const data = ['hola', 'mundo']
+const getItems = async (req, res) => {
+  const data = await trackModel.find({})
   res.send({ data })
 }
-const createItem = (req, res) => {}
+
+const createItem = async (req, res) => {
+  const { body } = req
+  const newTrack = await trackModel.create(body)
+
+  res.send(newTrack)
+}
+
 const updateItem = (req, res) => {}
 const deleteItem = (req, res) => {}
 
