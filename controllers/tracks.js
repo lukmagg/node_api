@@ -1,4 +1,6 @@
+const { matchedData } = require('express-validator')
 const { trackModel } = require('../models')
+const { handleHttpError } = require('../utils/handleErrors')
 
 /**
  * @swagger
@@ -38,7 +40,15 @@ const { trackModel } = require('../models')
  *       500:
  *         description: Error en el servidor.
  */
-const getItem = (req, res) => {}
+const getItem = async (req, res) => {
+  try {
+    const { id } = matchedData(req)
+    const data = await trackModel.findById(id)
+    res.send({ data })
+  } catch (err) {
+    handleHttpError(res, 'ERROR_GET_ITEM')
+  }
+}
 
 /**
  * @swagger
@@ -72,19 +82,39 @@ const getItem = (req, res) => {}
  *         description: Error en el servidor.
  */
 const getItems = async (req, res) => {
-  const data = await trackModel.find({})
-  res.send({ data })
+  try {
+    const data = await trackModel.find({})
+    res.send({ data })
+  } catch (e) {
+    handleHttpError(res, 'ERROR_GET_ITEMS')
+  }
 }
 
 const createItem = async (req, res) => {
-  const { body } = req
-  const newTrack = await trackModel.create(body)
-
-  res.send(newTrack)
+  try {
+    const body = matchedData(req)
+    const data = await trackModel.create(body)
+    res.send({ data })
+  } catch (e) {
+    handleHttpError(res, 'ERROR_CREATE_ITEM')
+  }
 }
 
-const updateItem = (req, res) => {}
-const deleteItem = (req, res) => {}
+const updateItem = async (req, res) => {
+  try {
+    const { id, ...body } = matchedData(req)
+    const data = await trackModel.findOneAndUpdate(
+      { _id: id },
+      body,
+      { new: true }
+    )
+    res.send({ data })
+  } catch (e) {
+    handleHttpError(res, 'ERROR_UPDATE_ITEM')
+  }
+}
+
+const deleteItem = async (req, res) => {}
 
 module.exports = {
   getItem,

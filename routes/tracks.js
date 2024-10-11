@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const { getItems, getItem, createItem } = require('../controllers/tracks')
+const { validatorCreateItem, validatorGetItem } = require('../validators/tracks')
+const { getItems, getItem, createItem, updateItem } = require('../controllers/tracks')
 
 /**
  * @swagger
@@ -55,8 +56,10 @@ router.get('/', getItems)
  *       404:
  *         description: Item no encontrado
  */
-router.get('/:id', getItem)
+router.get('/:id', validatorGetItem, getItem)
 
-router.post('/', createItem)
+router.post('/', validatorCreateItem, createItem)
+
+router.put('/:id', validatorGetItem, validatorCreateItem, updateItem)
 
 module.exports = router

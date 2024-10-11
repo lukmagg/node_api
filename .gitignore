@@ -1,5 +1,4 @@
 node_modules/
 data/
 .env
-NODE_ENTREVISTA.md
-PRINCIPIOS_SOLID.md
+ENTREVISTAS/
